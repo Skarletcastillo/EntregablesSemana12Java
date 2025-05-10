@@ -14,25 +14,25 @@ public class ProyectoController {
     @Autowired
     private ProyectoRepository proyectoRepository;
 
-    // Obtener todos los proyectos
+    // Obtener
     @GetMapping
     public List<Proyecto> obtenerProyectos() {
         return proyectoRepository.findAll();
     }
 
-    // Crear un nuevo proyecto
+    // Crear
     @PostMapping
     public Proyecto crearProyecto(@RequestBody Proyecto proyecto) {
         return proyectoRepository.save(proyecto);
     }
 
-    // Obtener un proyecto por ID
+    // Obtener
     @GetMapping("/{id}")
     public Proyecto obtenerProyectoPorId(@PathVariable Long id) {
         return proyectoRepository.findById(id).orElse(null);
     }
 
-    // Eliminar un proyecto por ID
+    // Eliminar
     @DeleteMapping("/{id}")
     public String eliminarProyecto(@PathVariable Long id) {
         if (proyectoRepository.existsById(id)) {
@@ -41,4 +41,18 @@ public class ProyectoController {
         }
         return "Proyecto no encontrado";
     }
+
+    // Actualizar
+    @PutMapping("/{id}")
+    public Proyecto actualizarProyecto(@PathVariable Long id, @RequestBody Proyecto proyectoActualizado) {
+        Proyecto proyecto = proyectoRepository.findById(id).orElse(null);
+        if (proyecto != null) {
+            proyecto.setNombre(proyectoActualizado.getNombre());
+            proyecto.setFechaInicio(proyectoActualizado.getFechaInicio());
+            proyecto.setPresupuesto(proyectoActualizado.getPresupuesto());
+            return proyectoRepository.save(proyecto);
+        }
+        return null;
+    }
+
 }
